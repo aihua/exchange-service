@@ -1,4 +1,4 @@
-package biz.hengartner.euroexchange.domain;
+package biz.hengartner.euroexchange.api.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

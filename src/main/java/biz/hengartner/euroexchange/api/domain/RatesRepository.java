@@ -1,4 +1,4 @@
-package biz.hengartner.euroexchange.domain;
+package biz.hengartner.euroexchange.api.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;

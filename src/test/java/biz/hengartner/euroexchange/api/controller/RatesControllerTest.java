@@ -1,8 +1,8 @@
-package biz.hengartner.euroexchange.controller;
+package biz.hengartner.euroexchange.api.controller;
 
 import biz.hengartner.euroexchange.Application;
-import biz.hengartner.euroexchange.domain.Rate;
-import biz.hengartner.euroexchange.domain.RatesRepository;
+import biz.hengartner.euroexchange.api.domain.Rate;
+import biz.hengartner.euroexchange.api.domain.RatesRepository;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;

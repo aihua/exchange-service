@@ -1,7 +1,7 @@
-package biz.hengartner.euroexchange.controller;
+package biz.hengartner.euroexchange.api.controller;
 
-import biz.hengartner.euroexchange.domain.Rate;
-import biz.hengartner.euroexchange.domain.RatesRepository;
+import biz.hengartner.euroexchange.api.domain.Rate;
+import biz.hengartner.euroexchange.api.domain.RatesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
