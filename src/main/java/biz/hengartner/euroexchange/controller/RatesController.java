@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class SampleController {
+public class RatesController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @ResponseBody
-    @RequestMapping("/api/hello")
-    public String helloWorld() {
+    @RequestMapping("/api/rates")
+    public String index() {
         log.debug("Logging works!");
         return "Hello World!";
     }

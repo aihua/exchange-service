@@ -18,7 +18,7 @@ import static com.jayway.restassured.RestAssured.when;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class SampleControllerTest {
+public class RatesControllerTest {
 
     @Value("${local.server.port}")
     int port;
@@ -31,7 +31,7 @@ public class SampleControllerTest {
     @Test
     public void canAccess() {
         when().
-                get("/api/hello").
+                get("/api/rates").
         then().
                 statusCode(HttpStatus.OK.value());
     }
