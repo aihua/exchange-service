@@ -1,7 +1,6 @@
 package biz.hengartner.euroexchange.ecb;
 
 import biz.hengartner.euroexchange.ecb.model.CubeWithTime;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
@@ -11,8 +10,7 @@ import java.util.Scanner;
 /**
  * Fetches XML from ECB webservice and returns POJOs.
  */
-@Service
-public class EurofxRetrieveService {
+public class EurofxRetriever {
 
     String URL_DAILY = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
     String URL_HIST = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml\n";
