@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static com.jayway.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.containsString;
@@ -40,7 +41,7 @@ public class RatesControllerTest {
     @Test
     public void retrieveByCurrencyAndDate() {
         // given
-        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), "2016-01-01");
+        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());
         ratesRepository.saveAndFlush(rate);
 
         when().

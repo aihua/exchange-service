@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table
@@ -27,9 +28,8 @@ public class Rate {
 	@NotNull
 	private BigDecimal rate;
 
-    // TODO: use LocalDate
 	@NotNull
-	private String date;
+	private LocalDate date;
 
 }
 

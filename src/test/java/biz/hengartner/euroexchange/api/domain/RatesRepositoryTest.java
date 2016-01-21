@@ -9,6 +9,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -24,7 +25,7 @@ public class RatesRepositoryTest {
     @Test
     public void retrieveByCurrencyAndDate() {
         // given
-        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), "2016-01-01");
+        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());
         ratesRepository.saveAndFlush(rate);
 
         // when

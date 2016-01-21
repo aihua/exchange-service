@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @RequestMapping("/api/rates")
 @Controller
 public class RatesController {
@@ -29,7 +32,10 @@ public class RatesController {
             @PathVariable("date") String dateString) {
 
         log.info("rates by currency: {}, date: {}", currency, dateString);
-        Rate rate = ratesRepository.findByCurrencyAndDate(currency, dateString);
+
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
+
+        Rate rate = ratesRepository.findByCurrencyAndDate(currency, date);
 
         log.debug("Found rate: {}", rate);
 
