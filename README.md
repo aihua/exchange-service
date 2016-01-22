@@ -70,6 +70,6 @@ Possible http-status codes:
 
 * expose metrics/health/etc. (e.g. via [spring boot actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html)
 * make scheduling bullet-proof
-* improve error handling in case rates-update fails
-* add [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS)
+* improve error handling for data-retrieval (when updating rates)
 * add interactive documentation with [swagger](http://swagger.io/)
+* add [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS)
