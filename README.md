@@ -35,7 +35,7 @@ Response:
 
     {"isReady":true}
 
-`isReady:false` until rates have been loaded from webservice for the first time.
+`isReady:false` until rates have been loaded from webservice for the first time.  
 `isReady:true`  after rates have been loaded once.
 
 ### `/api/currencies`
