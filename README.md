@@ -40,24 +40,25 @@ Response:
 
 ### `/api/currencies`
 
+Provides all strings available to use as `currency` parameter when querying `/api/rates/{currency}/{date}`
+
 Response:
 
     ["AUD","BGN","BRL","CAD","CHF","CNY","CZK","DKK","GBP","HKD","HRK","HUF","IDR","ILS","INR","JPY","KRW","MXN","MYR","NOK","NZD","PHP","PLN","RON","RUB","SEK","SGD","THB","TRY","USD","ZAR"]
 
-All strings available to use as a `currency` when querying `/api/rates/{currency}/{date}`
 
 ### `/api/rates/{currency}/{date}`
 
-`{currency}` use any string as provided by `/api/currencies`
-`{date}` [[ISO 8601 formatted date|https://en.wikipedia.org/wiki/ISO_8601]]
+Path-Variables:
+* `{currency}` use any string as provided by `/api/currencies`
+* `{date}` [[ISO 8601 formatted date|https://en.wikipedia.org/wiki/ISO_8601]]
 
-Request: `curl -H "Accept: application/json" localhost:8080/api/rates/USD/2016-01-21`
-
-Response:
+Request & Response:
     
+    curl -H "Accept: application/json" localhost:8080/api/rates/USD/2016-01-21
     {"rate":1.09}
     
-Which is the foreign exchange rate of '1.09' for EUR to USD on 2016-01-21.
+Where '1.09' is the foreign exchange rate for EUR to USD on 2016-01-21.
 
 Possible http-status codes:
 
