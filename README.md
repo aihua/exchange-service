@@ -8,10 +8,10 @@ Exchange rates as provided by [European Central Bank](http://www.ecb.europa.eu/s
 
 ## Under the hood
 
-* On application startup rates are imported from ECB XML feed.
+* On application startup, the rates are imported from ECB XML feed.
 * Uses both daily and 90-day-historic XML feeds.
-* Data is stored in a in-memory database
-* Data is update from feed every hour.
+* Rates are stored in an in-memory database.
+* Rates are updated every hour.
 
 ## Lets go!
 
@@ -71,5 +71,5 @@ Possible http-status codes:
 * expose metrics/health/etc. (e.g. via [spring boot actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html)
 * make scheduling bullet-proof
 * improve error handling in case rates-update fails
-* add [[HATEOAS|https://en.wikipedia.org/wiki/HATEOAS]]
+* add [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS)
 * add interactive documentation with [swagger](http://swagger.io/)
