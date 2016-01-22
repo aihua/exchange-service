@@ -4,18 +4,18 @@ Provide a simple API to fetch euro foreign exchange rates.
 
 ## Data Source
 
-Exchange rates as provided by [[European Central Bank|http://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html]]
+Exchange rates as provided by [European Central Bank](http://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html)
 
 ## Under the hood
 
-* On application startup rates are imported from ECB XML feed.
+* On application startup, the rates are imported from ECB XML feed.
 * Uses both daily and 90-day-historic XML feeds.
-* Data is stored in a in-memory database
-* Data is update from feed every hour.
+* Rates are stored in an in-memory database.
+* Rates are updated every hour.
 
 ## Lets go!
 
-NOTE: this project uses [[Lombok|https://projectlombok.org/]]. For full IDE support you might need to install a plugin.
+NOTE: this project uses [Lombok](https://projectlombok.org/). For full IDE support you might need to install a plugin.
 
 Running the application
 
@@ -40,24 +40,25 @@ Response:
 
 ### `/api/currencies`
 
+Provides all strings available to use as `currency` parameter when querying `/api/rates/{currency}/{date}`
+
 Response:
 
     ["AUD","BGN","BRL","CAD","CHF","CNY","CZK","DKK","GBP","HKD","HRK","HUF","IDR","ILS","INR","JPY","KRW","MXN","MYR","NOK","NZD","PHP","PLN","RON","RUB","SEK","SGD","THB","TRY","USD","ZAR"]
 
-All strings available to use as a `currency` when querying `/api/rates/{currency}/{date}`
 
 ### `/api/rates/{currency}/{date}`
 
-`{currency}` use any string as provided by `/api/currencies`
-`{date}` [[ISO 8601 formatted date|https://en.wikipedia.org/wiki/ISO_8601]]
+Path-Variables:
+* `{currency}` use any string as provided by `/api/currencies`
+* `{date}` [ISO 8601 formatted date](https://en.wikipedia.org/wiki/ISO_8601)
 
-Request: `curl -H "Accept: application/json" localhost:8080/api/rates/USD/2016-01-21`
-
-Response:
+Request & Response:
     
+    curl -H "Accept: application/json" localhost:8080/api/rates/USD/2016-01-21
     {"rate":1.09}
     
-Which is the foreign exchange rate of '1.09' for EUR to USD on 2016-01-21.
+Where '1.09' is the foreign exchange rate for EUR to USD on 2016-01-21.
 
 Possible http-status codes:
 
@@ -67,8 +68,8 @@ Possible http-status codes:
 
 ## Improvement ideas
 
-* expose metrics/health/etc. (e.g. via [[spring boot actuator|https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html]]
+* expose metrics/health/etc. (e.g. via [spring boot actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html))
 * make scheduling bullet-proof
-* improve error handling in case rates-update fails
-* add [[HATEOAS|https://en.wikipedia.org/wiki/HATEOAS]]
-* add interactive documentation with [[swagger|http://swagger.io/]]
+* improve error handling for data-retrieval (when updating rates)
+* add interactive documentation with [swagger](http://swagger.io/)
+* add [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS)
