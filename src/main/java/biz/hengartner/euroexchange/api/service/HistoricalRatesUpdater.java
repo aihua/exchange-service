@@ -10,6 +10,10 @@ import java.util.List;
 @Slf4j
 public class HistoricalRatesUpdater extends RatesUpdater {
 
+    public HistoricalRatesUpdater(RatesService ratesService) {
+        super(ratesService);
+    }
+
     @Override
     protected List<CubeWithTime> loadCubeWithTimeList(EurofxRetriever retriever) throws IOException {
         return retriever.fetchHistoricCubes();

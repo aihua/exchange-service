@@ -4,8 +4,8 @@ import biz.hengartner.euroexchange.api.domain.Rate;
 import biz.hengartner.euroexchange.ecb.EurofxRetriever;
 import biz.hengartner.euroexchange.ecb.model.Cube;
 import biz.hengartner.euroexchange.ecb.model.CubeWithTime;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -14,14 +14,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
+@Setter
 public abstract class RatesUpdater {
 
-    @Autowired
     private RatesService ratesService;
 
+    public RatesUpdater(RatesService ratesService) {
+        setRatesService(ratesService);
+    }
+
     public void update() {
-        EurofxRetriever retriever = new EurofxRetriever();
+        log.info("Updating rates!");
+
+        if (ratesService == null) {
+            throw new IllegalStateException("ratesService is null!");
+        }
+
         try {
+            EurofxRetriever retriever = new EurofxRetriever();
             List<CubeWithTime> cubeWithTimeList = loadCubeWithTimeList(retriever);
             for(CubeWithTime cubeWithTime: cubeWithTimeList) {
                 updateRatesFor(cubeWithTime);
@@ -40,4 +50,5 @@ public abstract class RatesUpdater {
             ratesService.insertOrUpdate(rate);
         }
     }
+
 }
