@@ -1,7 +1,6 @@
 package biz.hengartner.euroexchange.api.service;
 
 import biz.hengartner.euroexchange.api.domain.Rate;
-import biz.hengartner.euroexchange.api.domain.RatesRepository;
 import biz.hengartner.euroexchange.ecb.EurofxRetriever;
 import biz.hengartner.euroexchange.ecb.model.Cube;
 import biz.hengartner.euroexchange.ecb.model.CubeWithTime;
@@ -18,7 +17,7 @@ import java.util.List;
 public class RatesUpdater {
 
     @Autowired
-    private RatesRepository ratesRepository;
+    private RatesService ratesService;
 
     public void updateDaily() {
         EurofxRetriever retriever = new EurofxRetriever();
@@ -46,7 +45,7 @@ public class RatesUpdater {
         LocalDate date = LocalDate.parse(cubeWithTime.getTime(), DateTimeFormatter.ISO_DATE);
         for(Cube cube : cubeWithTime.getCubes()) {
             Rate rate = new Rate(cube.getCurrency(), new BigDecimal(cube.getRate()), date);
-            ratesRepository.save(rate);
+            ratesService.insertOrUpdate(rate);
         }
     }
 }

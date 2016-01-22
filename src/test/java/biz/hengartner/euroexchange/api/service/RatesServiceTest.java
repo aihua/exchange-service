@@ -1,0 +1,59 @@
+package biz.hengartner.euroexchange.api.service;
+
+import biz.hengartner.euroexchange.Application;
+import biz.hengartner.euroexchange.api.domain.Rate;
+import biz.hengartner.euroexchange.api.domain.RatesRepository;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.IntegrationTest;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@IntegrationTest()
+public class RatesServiceTest {
+
+    @Autowired
+    private RatesService ratesService;
+
+    @Autowired
+    private RatesRepository ratesRepository;
+
+    @Test
+    public void createNewRecord() {
+        // given
+        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());
+
+        // when
+        ratesService.insertOrUpdate(rate);
+
+        // then
+        assertThat(ratesRepository.count(), equalTo(1L));
+    }
+
+    @Test
+    public void updateExistingRecord() {
+        // given
+        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());
+        ratesService.insertOrUpdate(rate);
+
+        Rate duplicate = new Rate(rate.getCurrency(), new BigDecimal("2.1"), rate.getDate());
+
+        // when
+        ratesService.insertOrUpdate(duplicate);
+
+        // then
+        assertThat(ratesRepository.count(), equalTo(1L));
+        Rate newRate = ratesRepository.findAll().get(0);
+        assertTrue(newRate.getRate().compareTo(duplicate.getRate()) == 0);
+    }
+}
