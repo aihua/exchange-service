@@ -4,7 +4,7 @@ Provide a simple API to fetch euro foreign exchange rates.
 
 ## Data Source
 
-Exchange rates as provided by [[European Central Bank|http://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html]]
+Exchange rates as provided by [European Central Bank](http://www.ecb.europa.eu/stats/exchange/eurofxref/html/index.en.html)
 
 ## Under the hood
 
@@ -15,7 +15,7 @@ Exchange rates as provided by [[European Central Bank|http://www.ecb.europa.eu/s
 
 ## Lets go!
 
-NOTE: this project uses [[Lombok|https://projectlombok.org/]]. For full IDE support you might need to install a plugin.
+NOTE: this project uses [Lombok](https://projectlombok.org/). For full IDE support you might need to install a plugin.
 
 Running the application
 
@@ -51,7 +51,7 @@ Response:
 
 Path-Variables:
 * `{currency}` use any string as provided by `/api/currencies`
-* `{date}` [[ISO 8601 formatted date|https://en.wikipedia.org/wiki/ISO_8601]]
+* `{date}` [ISO 8601 formatted date](https://en.wikipedia.org/wiki/ISO_8601)
 
 Request & Response:
     
@@ -68,8 +68,8 @@ Possible http-status codes:
 
 ## Improvement ideas
 
-* expose metrics/health/etc. (e.g. via [[spring boot actuator|https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html]]
+* expose metrics/health/etc. (e.g. via [spring boot actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html)
 * make scheduling bullet-proof
 * improve error handling in case rates-update fails
 * add [[HATEOAS|https://en.wikipedia.org/wiki/HATEOAS]]
-* add interactive documentation with [[swagger|http://swagger.io/]]
+* add interactive documentation with [swagger](http://swagger.io/)
