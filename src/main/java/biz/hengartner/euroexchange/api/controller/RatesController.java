@@ -50,17 +50,13 @@ public class RatesController {
         }
 
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
-
         Rate rate = ratesRepository.findByCurrencyAndDate(currency, date);
-
-        if (rate == null) {
-            log.warn("unable to find rate for currency: {}, date: {}", currency, dateString);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (rate != null) {
+            return new ResponseEntity<>(rate, HttpStatus.OK);
         }
 
-        log.debug("Found rate: {}", rate);
-
-        return new ResponseEntity<>(rate, HttpStatus.OK);
+        log.warn("unable to find rate for currency: {}, date: {}", currency, dateString);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }
