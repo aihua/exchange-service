@@ -29,13 +29,6 @@ public class RatesController {
     @Autowired
     private StatusService statusService;
 
-
-    @RequestMapping(method = RequestMethod.GET, path = "/status")
-    @ResponseBody
-    public ResponseEntity<String> status() {
-        return new ResponseEntity<>("isReady: " + Boolean.toString(statusService.isReady()), HttpStatus.OK);
-    }
-
     @RequestMapping(method = RequestMethod.GET, path = "/{currency}/{date}")
     @ResponseBody
     public ResponseEntity<Rate> rateByCurrencyAndDate(
