@@ -15,8 +15,8 @@ public class RatesUpdateScheduler
 
     @Scheduled(fixedDelay = 60 * 60 * 1000) // execute once per hour
     public void fetchRates() {
-        new RatesUpdater().updateHistoric();
-        new RatesUpdater().updateDaily();
+        new HistoricalRatesUpdater().update();
+        new DailyRatesUpdater().update();
     }
 
 }

@@ -14,25 +14,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
-public class RatesUpdater {
+public abstract class RatesUpdater {
 
     @Autowired
     private RatesService ratesService;
 
-    public void updateDaily() {
+    public void update() {
         EurofxRetriever retriever = new EurofxRetriever();
         try {
-            CubeWithTime cubeWithTime = retriever.fetchDailyCubes();
-            updateRatesFor(cubeWithTime);
-        } catch (IOException e) {
-            log.warn("Failed to update rates!", e);
-        }
-    }
-
-    public void updateHistoric() {
-        EurofxRetriever retriever = new EurofxRetriever();
-        try {
-            List<CubeWithTime> cubeWithTimeList = retriever.fetchHistoricCubes();
+            List<CubeWithTime> cubeWithTimeList = loadCubeWithTimeList(retriever);
             for(CubeWithTime cubeWithTime: cubeWithTimeList) {
                 updateRatesFor(cubeWithTime);
             }
@@ -40,6 +30,8 @@ public class RatesUpdater {
             log.warn("Failed to update rates!", e);
         }
     }
+
+    protected abstract List<CubeWithTime> loadCubeWithTimeList(EurofxRetriever retriever) throws IOException;
 
     private void updateRatesFor(CubeWithTime cubeWithTime) {
         LocalDate date = LocalDate.parse(cubeWithTime.getTime(), DateTimeFormatter.ISO_DATE);
