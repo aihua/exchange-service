@@ -11,12 +11,16 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"currency","date"})})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class Rate {
+
+	public Rate(String currency, BigDecimal rate, LocalDate date) {
+		this(null, currency, rate, date);
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

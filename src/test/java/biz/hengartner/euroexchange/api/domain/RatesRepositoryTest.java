@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
@@ -33,5 +34,15 @@ public class RatesRepositoryTest {
 
         // then
         assertThat(retrievedRate, equalTo(rate));
+    }
+
+    @Test(expected = JpaSystemException.class)
+    public void duplicateCurrencyAndDateShouldFail() {
+        // given
+        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());
+        ratesRepository.saveAndFlush(rate);
+
+        Rate duplicate = new Rate(rate.getCurrency(), new BigDecimal("2.1"), rate.getDate());
+        ratesRepository.saveAndFlush(duplicate); // fails
     }
 }
