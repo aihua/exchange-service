@@ -5,7 +5,6 @@ import biz.hengartner.euroexchange.ecb.model.CubeWithTime;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Fetches XML from ECB webservice and returns POJOs.
@@ -24,12 +23,13 @@ public class EurofxRetriever {
     }
 
     private List<CubeWithTime> cubeWithTimesList(String url) throws IOException {
-        // Doesn't work :-( .. parser fails on the byte-order-mark or something.
-        // URL parserInput = new URL(url);
-
-        String parserInput = new Scanner(new URL(url).openStream(), "UTF-8").useDelimiter("\\A").next();
-
+        URL parserInput = new URL(url);
         EurofxXmlParser parser = new EurofxXmlParser();
         return parser.parseXml(parserInput);
+    }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(new EurofxRetriever().fetchDailyCubes().getCubes().size());
+
     }
 }
