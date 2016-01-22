@@ -18,4 +18,10 @@ public class StatusService {
         log.info("status isReady:true");
     }
 
+    public void reset() {
+        isReady = false;
+        log.info("status isReady:false");
+    }
+
+
 }

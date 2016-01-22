@@ -3,6 +3,7 @@ package biz.hengartner.euroexchange.api.controller;
 import biz.hengartner.euroexchange.Application;
 import biz.hengartner.euroexchange.api.domain.Rate;
 import biz.hengartner.euroexchange.api.domain.RatesRepository;
+import biz.hengartner.euroexchange.api.service.StatusService;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,12 +31,35 @@ public class RatesControllerTest {
     @Autowired
     private RatesRepository ratesRepository;
 
+    @Autowired
+    private StatusService statusService;
+
     @Value("${local.server.port}")
     int port;
 
     @Before
     public void setUp() {
         RestAssured.port = port;
+        ratesRepository.deleteAll();
+        statusService.reset();
+    }
+
+    @Test
+    public void notAvailable() {
+        statusService.setReady();
+
+        when().
+                get("/api/rates/USD/2016-01-21").
+        then().
+                statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    public void notReady() {
+        when().
+                get("/api/rates/USD/2016-01-21").
+                then().
+                statusCode(HttpStatus.SERVICE_UNAVAILABLE.value());
     }
 
     @Test
@@ -43,6 +67,8 @@ public class RatesControllerTest {
         // given
         Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());
         ratesRepository.saveAndFlush(rate);
+
+        statusService.setReady();
 
         when().
                 get("/api/rates/" + rate.getCurrency() + "/" + rate.getDate()).
