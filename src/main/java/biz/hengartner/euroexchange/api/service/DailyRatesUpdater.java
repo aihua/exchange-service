@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Fetch & store todays rates.
+ */
 @Slf4j
 public class DailyRatesUpdater extends RatesUpdater {
 

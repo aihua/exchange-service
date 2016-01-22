@@ -13,6 +13,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Fetch rates from xml-feed and create/update values locally.
+ */
 @Slf4j
 @Setter
 public abstract class RatesUpdater {
