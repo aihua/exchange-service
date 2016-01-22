@@ -3,8 +3,7 @@ package biz.hengartner.euroexchange.api.controller;
 import biz.hengartner.euroexchange.api.domain.Rate;
 import biz.hengartner.euroexchange.api.domain.RatesRepository;
 import biz.hengartner.euroexchange.api.service.StatusService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @RequestMapping("/api/rates")
 @Controller
 public class RatesController {
-
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RatesRepository ratesRepository;
