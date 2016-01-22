@@ -1,5 +1,6 @@
 package biz.hengartner.euroexchange.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,16 +25,19 @@ public class Rate {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
 	private Long id;
 
 	@NotNull
-	private String currency;
+    @JsonIgnore
+    private String currency;
 
 	@NotNull
 	private BigDecimal rate;
 
 	@NotNull
-	private LocalDate date;
+    @JsonIgnore
+    private LocalDate date;
 
 }
 
