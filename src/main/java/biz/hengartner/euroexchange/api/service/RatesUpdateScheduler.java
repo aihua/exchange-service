@@ -2,10 +2,12 @@ package biz.hengartner.euroexchange.api.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@ConditionalOnProperty("biz.hengartner.euroexchange.rates.scheduler")
 @Component
 public class RatesUpdateScheduler {
 
