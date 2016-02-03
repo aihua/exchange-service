@@ -12,7 +12,7 @@ import java.util.List;
 public class EurofxRetriever {
 
     String URL_DAILY = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
-    String URL_HIST = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml\n";
+    String URL_HIST = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml";
 
     public CubeWithTime fetchDailyCubes() throws IOException {
         return cubeWithTimesList(URL_DAILY).get(0);
