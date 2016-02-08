@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static com.jayway.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.containsString;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
@@ -66,26 +67,50 @@ public class ConvertControllerTest {
         statusService.setReady();
 
         when().
-                get("/api/convert/USD/CHF/10.90?date=" + dateString).
+                get("/api/convert/USD/CHF/5?date=" + dateString).
         then().
-                statusCode(HttpStatus.OK.value());
+                statusCode(HttpStatus.OK.value()).
+                body(containsString("10.00"));
+
     }
 
-
     @Test
-    public void convertUSDtoCHFnoDate() {
+    public void convertUSDtoCHFnoDateValues1() {
         LocalDate date = LocalDate.now();
-        Rate fromRate = new Rate(null, "USD", new BigDecimal("10"), date);
-        Rate toRate = new Rate(null, "CHF", new BigDecimal("20"), date);
+        Rate fromRate = new Rate(null, "USD", new BigDecimal("1.116"), date); // USD/EUR = 1.116, 1EUR=1.12USD, 1USD=0.90EUR
+        Rate toRate = new Rate(null, "CHF", new BigDecimal("1.1054"), date); // CHF/EUR = 1.1054 1EUR=1.11CHF, 1CHF=0.90EUR
+
         ratesRepository.saveAndFlush(fromRate);
         ratesRepository.saveAndFlush(toRate);
 
         statusService.setReady();
 
+        String expectedResult = "0.99"; // CHF/USD=0.98991, 1USD=0.99CHF, 1CHF=1.01USD
+
         when().
-                get("/api/convert/USD/CHF/10.90").
+                get("/api/convert/USD/CHF/1").
         then().
-                statusCode(HttpStatus.OK.value());
+                statusCode(HttpStatus.OK.value()).
+                body(containsString(expectedResult));
+    }
+
+    @Test
+    public void convertUSDtoCHFnoDateValues2() {
+        LocalDate date = LocalDate.now();
+        Rate fromRate = new Rate(null, "USD", new BigDecimal("0.5"), date);
+        Rate toRate = new Rate(null, "CHF", new BigDecimal("4"), date);
+        ratesRepository.saveAndFlush(fromRate);
+        ratesRepository.saveAndFlush(toRate);
+
+        statusService.setReady();
+
+        String expectedResult = "40.0";
+
+        when().
+                get("/api/convert/USD/CHF/5").
+        then().
+                statusCode(HttpStatus.OK.value()).
+                body(containsString(expectedResult));
     }
 
 
