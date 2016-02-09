@@ -5,6 +5,9 @@ import biz.hengartner.euroexchange.api.domain.RatesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class RatesService {
 
@@ -20,6 +23,10 @@ public class RatesService {
         }
 
         return ratesRepository.save(rate);
+    }
+
+    public List<Rate> save(Rate... rates) {
+        return ratesRepository.save(Arrays.asList(rates));
     }
 
 }
