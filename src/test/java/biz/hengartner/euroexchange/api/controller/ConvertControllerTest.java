@@ -3,6 +3,7 @@ package biz.hengartner.euroexchange.api.controller;
 import biz.hengartner.euroexchange.Application;
 import biz.hengartner.euroexchange.api.domain.Rate;
 import biz.hengartner.euroexchange.api.domain.RatesRepository;
+import biz.hengartner.euroexchange.api.service.RatesService;
 import biz.hengartner.euroexchange.api.service.StatusService;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
@@ -33,6 +34,9 @@ public class ConvertControllerTest {
     private RatesRepository ratesRepository;
 
     @Autowired
+    private RatesService ratesService;
+
+    @Autowired
     private StatusService statusService;
 
     @Value("${local.server.port}")
@@ -61,8 +65,7 @@ public class ConvertControllerTest {
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
         Rate fromRate = new Rate(null, "USD", new BigDecimal("10"), date);
         Rate toRate = new Rate(null, "CHF", new BigDecimal("20"), date);
-        ratesRepository.saveAndFlush(fromRate);
-        ratesRepository.saveAndFlush(toRate);
+        ratesService.save(fromRate, toRate);
 
         statusService.setReady();
 
@@ -79,9 +82,7 @@ public class ConvertControllerTest {
         LocalDate date = LocalDate.now();
         Rate fromRate = new Rate(null, "USD", new BigDecimal("1.116"), date); // USD/EUR = 1.116, 1EUR=1.12USD, 1USD=0.90EUR
         Rate toRate = new Rate(null, "CHF", new BigDecimal("1.1054"), date); // CHF/EUR = 1.1054 1EUR=1.11CHF, 1CHF=0.90EUR
-
-        ratesRepository.saveAndFlush(fromRate);
-        ratesRepository.saveAndFlush(toRate);
+        ratesService.save(fromRate, toRate);
 
         statusService.setReady();
 
@@ -99,8 +100,7 @@ public class ConvertControllerTest {
         LocalDate date = LocalDate.now();
         Rate fromRate = new Rate(null, "USD", new BigDecimal("0.5"), date);
         Rate toRate = new Rate(null, "CHF", new BigDecimal("4"), date);
-        ratesRepository.saveAndFlush(fromRate);
-        ratesRepository.saveAndFlush(toRate);
+        ratesService.save(fromRate, toRate);
 
         statusService.setReady();
 
