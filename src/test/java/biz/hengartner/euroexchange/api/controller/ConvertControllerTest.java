@@ -54,7 +54,7 @@ public class ConvertControllerTest {
         statusService.setReady();
 
         when().
-                get("/api/convert/USD/CHF/10.90?date=2016-01-21").
+                get("/api/convert/USD/CHF/5.50?date=2016-01-21").
         then().
                 statusCode(HttpStatus.NOT_FOUND.value());
     }
@@ -62,12 +62,9 @@ public class ConvertControllerTest {
     @Test
     public void convertUSDtoCHFwithDate() {
         String dateString = "2016-01-21";
-        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
-        Rate fromRate = new Rate(null, "USD", new BigDecimal("10"), date);
-        Rate toRate = new Rate(null, "CHF", new BigDecimal("20"), date);
-        ratesService.save(fromRate, toRate);
-
-        statusService.setReady();
+        String usdRate = "10";
+        String chfRate = "20";
+        addRates(dateString, usdRate, chfRate);
 
         when().
                 get("/api/convert/USD/CHF/5?date=" + dateString).
@@ -79,12 +76,10 @@ public class ConvertControllerTest {
 
     @Test
     public void convertUSDtoCHFnoDateValues1() {
-        LocalDate date = LocalDate.now();
-        Rate fromRate = new Rate(null, "USD", new BigDecimal("1.116"), date); // USD/EUR = 1.116, 1EUR=1.12USD, 1USD=0.90EUR
-        Rate toRate = new Rate(null, "CHF", new BigDecimal("1.1054"), date); // CHF/EUR = 1.1054 1EUR=1.11CHF, 1CHF=0.90EUR
-        ratesService.save(fromRate, toRate);
-
-        statusService.setReady();
+        final LocalDate date = LocalDate.now();
+        final String usdRate = "1.116"; // USD/EUR = 1.116, 1EUR=1.12USD, 1USD=0.90EUR
+        final String chfRate = "1.1054"; // CHF/EUR = 1.1054 1EUR=1.11CHF, 1CHF=0.90EUR
+        addRates(date, usdRate, chfRate);
 
         String expectedResult = "0.99"; // CHF/USD=0.98991, 1USD=0.99CHF, 1CHF=1.01USD
 
@@ -113,5 +108,16 @@ public class ConvertControllerTest {
                 body(containsString(expectedResult));
     }
 
+    private void addRates(String dateString, String usdRate, String chfRate) {
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
+        addRates(date, usdRate, chfRate);
+    }
+
+    private void addRates(LocalDate date, String usdRate, String chfRate) {
+        Rate fromRate = new Rate(null, "USD", new BigDecimal(usdRate), date);
+        Rate toRate = new Rate(null, "CHF", new BigDecimal(chfRate), date);
+        ratesService.save(fromRate, toRate);
+        statusService.setReady();
+    }
 
 }
