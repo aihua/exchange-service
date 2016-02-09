@@ -32,9 +32,10 @@ public class ConvertController {
             @PathVariable("fromCurrency") String fromCurrency,
             @PathVariable("toCurrency") String toCurrency,
             @PathVariable("amount") BigDecimal amount,
+            // TODO: dateString -> use date type
             @RequestParam(name = "date", required = false) String dateString) {
 
-        log.info("rates by fromCurrency: {}, toCurrency: {}, amount: {}, date: {}", fromCurrency, toCurrency, amount, dateString);
+        log.info("convert rates. fromCurrency: {}, toCurrency: {}, amount: {}, date: {}", fromCurrency, toCurrency, amount, dateString);
 
         if (!statusService.isReady()) {
             log.warn("service is not ready, will not query database!");
