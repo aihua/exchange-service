@@ -1,6 +1,7 @@
 package biz.hengartner.euroexchange.api.service;
 
 import biz.hengartner.euroexchange.api.domain.Rate;
+import biz.hengartner.euroexchange.api.util.DateHelper;
 import biz.hengartner.euroexchange.ecb.EurofxRetriever;
 import biz.hengartner.euroexchange.ecb.model.Cube;
 import biz.hengartner.euroexchange.ecb.model.CubeWithTime;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -47,7 +47,7 @@ public abstract class RatesUpdater {
     protected abstract List<CubeWithTime> loadCubeWithTimeList(EurofxRetriever retriever) throws IOException;
 
     private void updateRatesFor(CubeWithTime cubeWithTime) {
-        LocalDate date = LocalDate.parse(cubeWithTime.getTime(), DateTimeFormatter.ISO_DATE);
+        LocalDate date = DateHelper.parseIsoDate(cubeWithTime.getTime());
         for(Cube cube : cubeWithTime.getCubes()) {
             Rate rate = new Rate(cube.getCurrency(), new BigDecimal(cube.getRate()), date);
             ratesService.insertOrUpdate(rate);

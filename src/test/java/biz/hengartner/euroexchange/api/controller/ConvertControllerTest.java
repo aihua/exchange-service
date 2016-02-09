@@ -5,6 +5,7 @@ import biz.hengartner.euroexchange.api.domain.Rate;
 import biz.hengartner.euroexchange.api.domain.RatesRepository;
 import biz.hengartner.euroexchange.api.service.RatesService;
 import biz.hengartner.euroexchange.api.service.StatusService;
+import biz.hengartner.euroexchange.api.util.DateHelper;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import static com.jayway.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.containsString;
@@ -109,8 +109,7 @@ public class ConvertControllerTest {
     }
 
     private void addRates(String dateString, String usdRate, String chfRate) {
-        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
-        addRates(date, usdRate, chfRate);
+        addRates(DateHelper.parseIsoDate(dateString), usdRate, chfRate);
     }
 
     private void addRates(LocalDate date, String usdRate, String chfRate) {

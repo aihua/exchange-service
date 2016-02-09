@@ -3,8 +3,10 @@ package biz.hengartner.euroexchange.api.controller;
 import biz.hengartner.euroexchange.api.domain.Rate;
 import biz.hengartner.euroexchange.api.domain.RatesRepository;
 import biz.hengartner.euroexchange.api.service.StatusService;
+import biz.hengartner.euroexchange.api.util.DateHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @RequestMapping("/api/rates")
@@ -31,23 +32,22 @@ public class RatesController {
     @ResponseBody
     public ResponseEntity<Rate> rateByCurrencyAndDate(
             @PathVariable("currency") String currency,
-            // TODO: dateString -> use date type
-            @PathVariable("date") String dateString) {
+            @DateTimeFormat(pattern=DateHelper.REQUEST_PARAM_ISO_DATE_FORMAT)
+            @PathVariable("date") LocalDate date) {
 
-        log.info("rates by currency: {}, date: {}", currency, dateString);
+        log.info("rates by currency: {}, date: {}", currency, date);
 
         if (!statusService.isReady()) {
             log.warn("service is not ready, will not query database!");
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
 
-        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
         Rate rate = ratesRepository.findByCurrencyAndDate(currency, date);
         if (rate != null) {
             return new ResponseEntity<>(rate, HttpStatus.OK);
         }
 
-        log.warn("unable to find rate for currency: {}, date: {}", currency, dateString);
+        log.warn("unable to find rate for currency: {}, date: {}", currency, date);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

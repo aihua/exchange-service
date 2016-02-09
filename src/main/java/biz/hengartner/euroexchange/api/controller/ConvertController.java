@@ -3,8 +3,10 @@ package biz.hengartner.euroexchange.api.controller;
 import biz.hengartner.euroexchange.api.domain.Rate;
 import biz.hengartner.euroexchange.api.domain.RatesRepository;
 import biz.hengartner.euroexchange.api.service.StatusService;
+import biz.hengartner.euroexchange.api.util.DateHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @RequestMapping("/api/convert")
@@ -32,17 +33,19 @@ public class ConvertController {
             @PathVariable("fromCurrency") String fromCurrency,
             @PathVariable("toCurrency") String toCurrency,
             @PathVariable("amount") BigDecimal amount,
-            // TODO: dateString -> use date type
-            @RequestParam(name = "date", required = false) String dateString) {
+            @DateTimeFormat(pattern= DateHelper.REQUEST_PARAM_ISO_DATE_FORMAT)
+            @RequestParam(name = "date", required = false) LocalDate date) {
 
-        log.info("convert rates. fromCurrency: {}, toCurrency: {}, amount: {}, date: {}", fromCurrency, toCurrency, amount, dateString);
+        log.info("convert rates. fromCurrency: {}, toCurrency: {}, amount: {}, date: {}", fromCurrency, toCurrency, amount, date);
 
         if (!statusService.isReady()) {
             log.warn("service is not ready, will not query database!");
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
 
-        LocalDate date = parseDateOrNowIfEmpty(dateString);
+        if (date == null) {
+            date = LocalDate.now();
+        }
 
         Rate fromRate = ratesRepository.findByCurrencyAndDate(fromCurrency, date);
         Rate toRate = ratesRepository.findByCurrencyAndDate(toCurrency, date);
@@ -56,16 +59,6 @@ public class ConvertController {
         BigDecimal convertedAmount = amount.divide(fromRate.getRate(), MathContext.DECIMAL128).multiply(toRate.getRate());
 
         return new ResponseEntity<>(convertedAmount, HttpStatus.OK);
-    }
-
-    private LocalDate parseDateOrNowIfEmpty(@RequestParam(name = "date", required = true) String dateString) {
-        LocalDate date = null;
-        if (dateString != null) {
-            date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
-        } else {
-            date = LocalDate.now();
-        }
-        return date;
     }
 
 }
