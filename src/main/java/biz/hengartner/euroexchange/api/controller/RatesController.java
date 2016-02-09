@@ -31,6 +31,7 @@ public class RatesController {
     @ResponseBody
     public ResponseEntity<Rate> rateByCurrencyAndDate(
             @PathVariable("currency") String currency,
+            // TODO: dateString -> use date type
             @PathVariable("date") String dateString) {
 
         log.info("rates by currency: {}, date: {}", currency, dateString);
