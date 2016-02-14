@@ -12,4 +12,8 @@ public class DateHelper {
     public static LocalDate parseIsoDate(String time) {
         return LocalDate.parse(time, DATE_TIME_FORMATTER_ISO_DATE);
     }
+
+    public static String toIsoFormat(LocalDate date) {
+        return DATE_TIME_FORMATTER_ISO_DATE.format(date);
+    }
 }

@@ -75,6 +75,12 @@ public class RatesServiceTest {
         assertThat(retrievedRate, equalTo(rate));
     }
 
+
+    @Test(expected = RateNotFoundException.class)
+    public void shouldNotFindRate() throws RateNotFoundException {
+        ratesService.findByCurrencyAndDateOrThrowException("USD", LocalDate.now());
+    }
+
     @Test(expected = JpaSystemException.class)
     public void duplicateCurrencyAndDateShouldFail() {
         Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());

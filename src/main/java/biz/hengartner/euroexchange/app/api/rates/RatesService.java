@@ -38,6 +38,15 @@ public class RatesService {
         return ratesRepository.findByCurrencyAndDate(currency, date);
     }
 
+    public Rate findByCurrencyAndDateOrThrowException(String currency, LocalDate date) throws RateNotFoundException {
+        Rate rate = findByCurrencyAndDate(currency, date);
+        if (rate != null) {
+            return rate;
+        }
+
+        throw new RateNotFoundException(currency, date);
+    }
+
     public List<String> currencies() {
         return ratesRepository.currencies();
     }

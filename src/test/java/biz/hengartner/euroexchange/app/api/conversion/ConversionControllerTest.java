@@ -1,24 +1,14 @@
 package biz.hengartner.euroexchange.app.api.conversion;
 
 import biz.hengartner.euroexchange.Application;
-import biz.hengartner.euroexchange.app.api.rates.Rate;
-import biz.hengartner.euroexchange.app.api.rates.RatesRepository;
-import biz.hengartner.euroexchange.app.api.rates.RatesService;
-import biz.hengartner.euroexchange.app.api.status.StatusService;
-import biz.hengartner.euroexchange.app.util.DateHelper;
-import com.jayway.restassured.RestAssured;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static com.jayway.restassured.RestAssured.when;
@@ -28,26 +18,7 @@ import static org.hamcrest.Matchers.containsString;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
-public class ConversionControllerTest {
-
-    @Autowired
-    private RatesRepository ratesRepository;
-
-    @Autowired
-    private RatesService ratesService;
-
-    @Autowired
-    private StatusService statusService;
-
-    @Value("${local.server.port}")
-    int port;
-
-    @Before
-    public void setUp() {
-        RestAssured.port = port;
-        ratesRepository.deleteAll();
-        statusService.reset();
-    }
+public class ConversionControllerTest extends AbstractConversionTest {
 
     @Test
     public void convertUSDtoCHFwithEmptyDB() {
@@ -92,12 +63,10 @@ public class ConversionControllerTest {
 
     @Test
     public void convertUSDtoCHFnoDateValues2() {
-        LocalDate date = LocalDate.now();
-        Rate fromRate = new Rate(null, "USD", new BigDecimal("0.5"), date);
-        Rate toRate = new Rate(null, "CHF", new BigDecimal("4"), date);
-        ratesService.save(fromRate, toRate);
-
-        statusService.setReady();
+        final LocalDate date = LocalDate.now();
+        final String usdRate = "0.5"; // USD/EUR = 1.116, 1EUR=1.12USD, 1USD=0.90EUR
+        final String chfRate = "4"; // CHF/EUR = 1.1054 1EUR=1.11CHF, 1CHF=0.90EUR
+        addRates(date, usdRate, chfRate);
 
         String expectedResult = "40.0";
 
@@ -106,17 +75,6 @@ public class ConversionControllerTest {
         then().
                 statusCode(HttpStatus.OK.value()).
                 body(containsString(expectedResult));
-    }
-
-    private void addRates(String dateString, String usdRate, String chfRate) {
-        addRates(DateHelper.parseIsoDate(dateString), usdRate, chfRate);
-    }
-
-    private void addRates(LocalDate date, String usdRate, String chfRate) {
-        Rate fromRate = new Rate(null, "USD", new BigDecimal(usdRate), date);
-        Rate toRate = new Rate(null, "CHF", new BigDecimal(chfRate), date);
-        ratesService.save(fromRate, toRate);
-        statusService.setReady();
     }
 
 }

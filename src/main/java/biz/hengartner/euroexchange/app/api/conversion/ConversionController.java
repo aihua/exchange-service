@@ -1,7 +1,6 @@
 package biz.hengartner.euroexchange.app.api.conversion;
 
-import biz.hengartner.euroexchange.app.api.rates.Rate;
-import biz.hengartner.euroexchange.app.api.rates.RatesService;
+import biz.hengartner.euroexchange.app.api.rates.RateNotFoundException;
 import biz.hengartner.euroexchange.app.api.status.StatusService;
 import biz.hengartner.euroexchange.app.util.DateHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDate;
 
 @Slf4j
@@ -22,7 +20,7 @@ import java.time.LocalDate;
 public class ConversionController {
 
     @Autowired
-    private RatesService ratesService;
+    private ConversionService conversionService;
 
     @Autowired
     private StatusService statusService;
@@ -43,22 +41,17 @@ public class ConversionController {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
 
-        if (date == null) {
-            date = LocalDate.now();
+        LocalDate conversionDate = date;
+        if (conversionDate == null) {
+            conversionDate = LocalDate.now();
         }
 
-        Rate fromRate = ratesService.findByCurrencyAndDate(fromCurrency, date);
-        Rate toRate = ratesService.findByCurrencyAndDate(toCurrency, date);
-
-        log.debug("fromRate: {}, toRate: {}", fromRate, toRate);
-
-        if (fromRate == null || toRate == null) {
+        try {
+            BigDecimal convertedAmount = conversionService.convert(fromCurrency, toCurrency, amount, conversionDate);
+            return new ResponseEntity<>(convertedAmount, HttpStatus.OK);
+        } catch (RateNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        BigDecimal convertedAmount = amount.divide(fromRate.getRate(), MathContext.DECIMAL128).multiply(toRate.getRate());
-
-        return new ResponseEntity<>(convertedAmount, HttpStatus.OK);
     }
 
 }
