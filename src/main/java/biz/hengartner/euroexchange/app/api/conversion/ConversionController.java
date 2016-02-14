@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Convert an amount between two currencies.
+ */
 @Slf4j
 @RequestMapping("/api/conversion")
 @Controller

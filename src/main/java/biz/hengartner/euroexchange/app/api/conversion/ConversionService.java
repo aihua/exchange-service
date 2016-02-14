@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.LocalDate;
 
+/**
+ * Convert an amount between two currencies.
+ */
 @Slf4j
 @Service("apiConversionService")
 public class ConversionService {

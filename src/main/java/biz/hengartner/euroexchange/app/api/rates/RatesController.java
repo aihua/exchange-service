@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 
+/**
+ * Provides exchange rates for a currency-date combination.
+ */
 @Slf4j
 @RequestMapping("/api/rates")
 @Controller

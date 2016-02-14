@@ -3,6 +3,11 @@ package biz.hengartner.euroexchange.app.api.status;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service status.
+ *
+ * Query this service to find out if exchange-rates have loaded and are available.
+ */
 @Slf4j
 @Service
 public class StatusService {

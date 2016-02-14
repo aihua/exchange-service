@@ -3,6 +3,9 @@ package biz.hengartner.euroexchange.app.util;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Provide date-conversion and date-formats.
+ */
 public class DateHelper {
 
     public static final String REQUEST_PARAM_ISO_DATE_FORMAT = "yyyy-MM-dd";

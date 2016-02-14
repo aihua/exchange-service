@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+/**
+ * Provides a list of all available currencies.
+ */
 @Slf4j
 @RequestMapping("/api/currencies")
 @Controller
