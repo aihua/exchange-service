@@ -40,13 +40,12 @@ public class RatesController {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
 
-        Rate rate = ratesService.findByCurrencyAndDate(currency, date);
-        if (rate != null) {
+        try {
+            Rate rate = ratesService.findByCurrencyAndDateOrThrowException(currency, date);
             return new ResponseEntity<>(rate, HttpStatus.OK);
+        } catch (RateNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        log.warn("unable to find rate for currency: {}, date: {}", currency, date);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+   }
 
 }
