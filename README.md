@@ -1,6 +1,8 @@
 # Foreign Exchange Rate Service
 
-Provide a simple API to fetch euro foreign exchange rates.
+Provide a simple API to convert between foreign exchange rates.
+
+Based on EUR exchange rates provided by European-Central-Bank.
 
 ## Data Source
 
@@ -26,6 +28,7 @@ Use the service
     curl -i -H "Accept: application/json" localhost:8080/api/status
     curl -i -H "Accept: application/json" localhost:8080/api/currencies
     curl -i -H "Accept: application/json" localhost:8080/api/rates/USD/2016-01-21
+    curl -i -H "Accept: application/json" 'localhost:8080/api/conversion/USD/CHF/1?date=2016-01-21'
 
 ## Endpoints
 
