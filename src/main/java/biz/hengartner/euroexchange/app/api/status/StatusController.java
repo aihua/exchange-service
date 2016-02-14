@@ -1,6 +1,5 @@
 package biz.hengartner.euroexchange.app.api.status;
 
-import biz.hengartner.euroexchange.app.api.rates.RatesRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +18,7 @@ import java.util.Map;
 public class StatusController {
 
     @Autowired
-    private RatesRepository ratesRepository;
-
-    @Autowired
     private StatusService statusService;
-
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody

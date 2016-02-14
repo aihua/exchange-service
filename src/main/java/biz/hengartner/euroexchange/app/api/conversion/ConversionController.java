@@ -1,7 +1,7 @@
 package biz.hengartner.euroexchange.app.api.conversion;
 
 import biz.hengartner.euroexchange.app.api.rates.Rate;
-import biz.hengartner.euroexchange.app.api.rates.RatesRepository;
+import biz.hengartner.euroexchange.app.api.rates.RatesService;
 import biz.hengartner.euroexchange.app.api.status.StatusService;
 import biz.hengartner.euroexchange.app.util.DateHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.time.LocalDate;
 public class ConversionController {
 
     @Autowired
-    private RatesRepository ratesRepository;
+    private RatesService ratesService;
 
     @Autowired
     private StatusService statusService;
@@ -47,8 +47,8 @@ public class ConversionController {
             date = LocalDate.now();
         }
 
-        Rate fromRate = ratesRepository.findByCurrencyAndDate(fromCurrency, date);
-        Rate toRate = ratesRepository.findByCurrencyAndDate(toCurrency, date);
+        Rate fromRate = ratesService.findByCurrencyAndDate(fromCurrency, date);
+        Rate toRate = ratesService.findByCurrencyAndDate(toCurrency, date);
 
         log.debug("fromRate: {}, toRate: {}", fromRate, toRate);
 

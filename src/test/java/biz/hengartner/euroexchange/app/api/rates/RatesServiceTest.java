@@ -1,11 +1,13 @@
 package biz.hengartner.euroexchange.app.api.rates;
 
 import biz.hengartner.euroexchange.Application;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
@@ -25,6 +27,11 @@ public class RatesServiceTest {
 
     @Autowired
     private RatesRepository ratesRepository;
+
+    @Before
+    public void setUp() {
+        ratesRepository.deleteAll();
+    }
 
     @Test
     public void createNewRecord() {
@@ -53,5 +60,27 @@ public class RatesServiceTest {
         assertThat(ratesRepository.count(), equalTo(1L));
         Rate newRate = ratesRepository.findAll().get(0);
         assertTrue(newRate.getRate().compareTo(duplicate.getRate()) == 0);
+    }
+
+    @Test
+    public void retrieveByCurrencyAndDate() {
+        // given
+        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());
+        ratesService.save(rate);
+
+        // when
+        Rate retrievedRate = ratesService.findByCurrencyAndDate(rate.getCurrency(), rate.getDate());
+
+        // then
+        assertThat(retrievedRate, equalTo(rate));
+    }
+
+    @Test(expected = JpaSystemException.class)
+    public void duplicateCurrencyAndDateShouldFail() {
+        Rate rate = new Rate(null, "USD", new BigDecimal("1.21"), LocalDate.now());
+        ratesService.save(rate);
+
+        Rate duplicate = new Rate(rate.getCurrency(), rate.getRate(), rate.getDate());
+        ratesService.save(duplicate); // fails
     }
 }

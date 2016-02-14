@@ -1,6 +1,6 @@
 package biz.hengartner.euroexchange.app.api.currencies;
 
-import biz.hengartner.euroexchange.app.api.rates.RatesRepository;
+import biz.hengartner.euroexchange.app.api.rates.RatesService;
 import biz.hengartner.euroexchange.app.api.status.StatusService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
 public class CurrenciesController {
 
     @Autowired
-    private RatesRepository ratesRepository;
+    private RatesService ratesService;
 
     @Autowired
     private StatusService statusService;
@@ -32,7 +32,7 @@ public class CurrenciesController {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
 
-        return new ResponseEntity<>(ratesRepository.currencies(), HttpStatus.OK);
+        return new ResponseEntity<>(ratesService.currencies(), HttpStatus.OK);
     }
 
 }

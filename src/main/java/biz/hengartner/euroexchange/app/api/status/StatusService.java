@@ -23,5 +23,4 @@ public class StatusService {
         log.info("status isReady:false");
     }
 
-
 }

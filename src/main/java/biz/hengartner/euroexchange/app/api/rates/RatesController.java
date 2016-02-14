@@ -21,7 +21,7 @@ import java.time.LocalDate;
 public class RatesController {
 
     @Autowired
-    private RatesRepository ratesRepository;
+    private RatesService ratesService;
 
     @Autowired
     private StatusService statusService;
@@ -40,7 +40,7 @@ public class RatesController {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
 
-        Rate rate = ratesRepository.findByCurrencyAndDate(currency, date);
+        Rate rate = ratesService.findByCurrencyAndDate(currency, date);
         if (rate != null) {
             return new ResponseEntity<>(rate, HttpStatus.OK);
         }
