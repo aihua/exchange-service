@@ -66,6 +66,25 @@ Possible http-status codes:
 * 404 - requested rate not found for currency & date combination (history is until 90 days back, no rates on weekends)
 * 503 - if rates have not been loaded yet. corresponds to `{"isReady":false}` of `/api/status`
 
+### `/api/conversion/{fromCurrency}/{toCurrency}/{amount}?date={date}`
+
+Path-Variables / Request-Variables:
+* `{fromCurrency}` use any string as provided by `/api/currencies`
+* `{toCurrency}` use any string as provided by `/api/currencies`
+* `{amount}` amount
+* `{date}` (optional) [ISO 8601 formatted date](https://en.wikipedia.org/wiki/ISO_8601)
+
+Request & Response:
+
+    curl -H "Accept: application/json" 'localhost:8080/api/conversion/USD/CHF/1?date=2016-01-21'
+    1.000000000000000000000000000000000046
+
+Possible http-status codes:
+
+* 200 - converted amount returned
+* 404 - requested rate not found for currency & date combination (history is until 90 days back, no rates on weekends)
+* 503 - if rates have not been loaded yet. corresponds to `{"isReady":false}` of `/api/status`
+
 ## Improvement ideas
 
 * expose metrics/health/etc. (e.g. via [spring boot actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-enabling.html))
